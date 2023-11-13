@@ -6,7 +6,7 @@ namespace BlazorEcommerce.Client.Services.CategoryService
 	{
 		private readonly HttpClient _http;
 
-		private CategoryService(HttpClient http)
+		public CategoryService(HttpClient http)
 		{
 			_http = http;
 		}
