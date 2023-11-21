@@ -16,12 +16,9 @@ namespace BlazorEcommerce.Shared
         public string Description { get; set; } = string.Empty;
 
         public string ImageUrl { get; set; } = string.Empty;
-
-        [Column(TypeName ="decimal(18,2)")]
-        public decimal Price { get; set; }
-
         public Category? Category { get; set; }
-		public int CategoryId { get; set; } //es necesaria para el seed , o para usar si se quiere usar para otra cosa en vez de toda la categoria ??
+        public int CategoryId { get; set; } //es necesaria para el seed , o para usar si se quiere usar para otra cosa en vez de toda la categoria ??
 
+        public List<ProductVariant> Variants { get; set; }=new List<ProductVariant>();
 	}
 }
