@@ -252,7 +252,7 @@
 				   OriginalPrice = 399m
 			   }
 		   );
-		}
+		 }
 
 		public DbSet<Product> Products { get; set; } //tabla en bd	
 		public DbSet<Category> Categories { get; set; }
