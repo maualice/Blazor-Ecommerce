@@ -1,4 +1,6 @@
-﻿namespace BlazorEcommerce.Server.Services.ProductService
+﻿using Microsoft.EntityFrameworkCore;
+
+namespace BlazorEcommerce.Server.Services.ProductService
 {
 	public class ProductService : IProductService
 	{
@@ -8,20 +10,23 @@
 		{
 			_context = context;
 		}
-		public async Task<ServiceResponse<List<Product>>> GetProductAsync()
+		public async Task<ServiceResponse<List<Product>>> GetProductAsync() //list of products
 		{
 			var response = new ServiceResponse<List<Product>>
 			{
-				Data = await _context.Products.ToListAsync()
+				Data = await _context.Products.Include(p=>p.Variants).ToListAsync()
 			};
 
 			return response;
 		}
 
-		public async Task<ServiceResponse<Product>> GetProductAsync(int productId)
+		public async Task<ServiceResponse<Product>> GetProductAsync(int productId) //product details
 		{
 			var response = new ServiceResponse<Product>();
-			var product = await _context.Products.FindAsync(productId); //tiene el producto de la base??
+			var product = await _context.Products
+				.Include(p=>p.Variants)
+				.ThenInclude(v=>v.ProductType)
+				.FirstOrDefaultAsync(p=>p.Id==productId);//without default if is null result in an exception  
 			if (product == null)
 			{
 				response.Success = false;
@@ -40,6 +45,7 @@
 			{
 				Data = await _context.Products
 					.Where(p=> p.Category.Url.ToLower().Equals(categoryUrl.ToLower()))
+					.Include(p=>p.Variants)
 					.ToListAsync()
 			};
 			return response;
